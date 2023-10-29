@@ -1,0 +1,1370 @@
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import 'all_records_model.dart';
+export 'all_records_model.dart';
+
+class AllRecordsWidget extends StatefulWidget {
+  const AllRecordsWidget({Key? key}) : super(key: key);
+
+  @override
+  _AllRecordsWidgetState createState() => _AllRecordsWidgetState();
+}
+
+class _AllRecordsWidgetState extends State<AllRecordsWidget> {
+  late AllRecordsModel _model;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => AllRecordsModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Color(0xFF3379B7),
+        body: SafeArea(
+          top: true,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+                        child: Container(
+                          width: double.infinity,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Color(0x00FFFFFF),
+                          ),
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional(0.00, 0.00),
+                                child: Text(
+                                  'All Records',
+                                  style: FlutterFlowTheme.of(context)
+                                      .titleLarge
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                      ),
+                                ),
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional(1.00, 0.00),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      300, 0, 0, 0),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      final selectedFiles = await selectFiles(
+                                        allowedExtensions: ['pdf'],
+                                        multiFile: false,
+                                      );
+                                      if (selectedFiles != null) {
+                                        setState(() =>
+                                            _model.isDataUploading = true);
+                                        var selectedUploadedFiles =
+                                            <FFUploadedFile>[];
+
+                                        try {
+                                          selectedUploadedFiles = selectedFiles
+                                              .map((m) => FFUploadedFile(
+                                                    name: m.storagePath
+                                                        .split('/')
+                                                        .last,
+                                                    bytes: m.bytes,
+                                                  ))
+                                              .toList();
+                                        } finally {
+                                          _model.isDataUploading = false;
+                                        }
+                                        if (selectedUploadedFiles.length ==
+                                            selectedFiles.length) {
+                                          setState(() {
+                                            _model.uploadedLocalFile =
+                                                selectedUploadedFiles.first;
+                                          });
+                                        } else {
+                                          setState(() {});
+                                          return;
+                                        }
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.upload_file,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                      size: 35,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional(-1.00, 0.00),
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    context.pushNamed(
+                                      'MainDashboard',
+                                      extra: <String, dynamic>{
+                                        kTransitionInfoKey: TransitionInfo(
+                                          hasTransition: true,
+                                          transitionType:
+                                              PageTransitionType.leftToRight,
+                                          duration: Duration(milliseconds: 300),
+                                        ),
+                                      },
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_back_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    size: 35,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () async {
+                          context.pushNamed(
+                            'AllRecords2',
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.rightToLeft,
+                                duration: Duration(milliseconds: 300),
+                              ),
+                            },
+                          );
+                        },
+                        text: '2023',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () async {
+                          context.pushNamed(
+                            'AllRecords2Copy',
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.rightToLeft,
+                                duration: Duration(milliseconds: 300),
+                              ),
+                            },
+                          );
+                        },
+                        text: '2022',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2021',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2020',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2019',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2018',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2017',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2016',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2015',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2014',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2013',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2012',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2011',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2010',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2009',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2008',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2007',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2006',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2005',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2004',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2003',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2002',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2001',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '2000',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1999',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1998',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1997',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1996',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1995',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1994',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1993',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1992',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1991',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1990',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1989',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1988',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1987',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1986',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1985',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1984',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1983',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1982',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1981',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color: Color(0xFF342ECB),
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyLarge.override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                  ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        text: '1980',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 60,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: 'Readex Pro',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
